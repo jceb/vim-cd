@@ -14,9 +14,15 @@ if ! exists('g:root_elements')
 endif
 
 " Get root directory of the currently edited file
-function! GetRootDir()
+" a:0 optional argument to provide an absolute path to a directory as a starting
+"     point for the root dir search
+function! GetRootDir(...)
     let l:rootdir = ''
-    let l:repopath = expand('%:p:h')
+    if a:0 > 0
+        let l:repopath = a:1
+    else
+        let l:repopath = expand('%:p:h')
+    endif
     while l:rootdir == '' && l:repopath != '/'
         for elem in g:root_elements
             let l:path = finddir(elem, l:repopath.';'.l:repopath)
