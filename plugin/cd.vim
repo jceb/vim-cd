@@ -23,19 +23,19 @@ function! GetRootDir(...)
     else
         let l:repopath = expand('%:p:h')
     endif
-    while l:rootdir == '' && l:repopath != '/'
-        for elem in g:root_elements
-            let l:path = finddir(elem, l:repopath.';'.l:repopath)
-            if empty(l:path)
-                let l:path = findfile(elem, l:repopath.';'.l:repopath)
-            endif
-            if !empty(l:path)
-                let l:rootdir = fnamemodify(l:path, ':h')
-                break
-            endif
-        endfor
-        let l:repopath = fnamemodify(l:repopath, ':h')
-    endwhile
+    for elem in g:root_elements
+        let l:path = finddir(elem, l:repopath.';/')
+        if empty(l:path)
+            let l:path = findfile(elem, l:repopath.';/')
+        endif
+        if !empty(l:path)
+            let l:rootdir = fnamemodify(l:path, ':h')
+            break
+        endif
+    endfor
+    if empty(l:rootdir)
+        let l:rootdir = l:repopath
+    endif
     return l:rootdir
 endfunction
 
