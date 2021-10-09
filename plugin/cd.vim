@@ -23,21 +23,23 @@ function! GetRootDir(...)
     else
         let l:repopath = expand('%:p:h')
     endif
-    while l:rootdir == '' && l:repopath != '/'
-    for elem in g:root_elements
-        " INFO: search one directory after another to find the closest directory
-        " that contains any of the files, instead of finding the first parent
-        " directory that contains the file that we're currently looking at
-        let l:path = finddir(elem, l:repopath.';'.l:repopath)
-        if empty(l:path)
-            let l:path = findfile(elem, l:repopath.';'.l:repopath)
-        endif
-        if !empty(l:path)
-            let l:rootdir = fnamemodify(l:path, ':h')
-            break
-        endif
-    endfor
-endwhile
+    let l:currentdir = l:repopath
+    while empty(l:rootdir) && ! (empty(l:currentdir) || l:currentdir == '/')
+        for elem in g:root_elements
+            " INFO: search one directory after another to find the closest directory
+            " that contains any of the files, instead of finding the first parent
+            " directory that contains the file that we're currently looking at
+            let l:path = finddir(elem, l:currentdir.';'.l:currentdir)
+            if empty(l:path)
+                let l:path = findfile(elem, l:currentdir.';'.l:currentdir)
+            endif
+            if !empty(l:path)
+                let l:rootdir = l:currentdir
+                break
+            endif
+        endfor
+        let l:currentdir = fnamemodify(l:currentdir, ':h')
+    endwhile
     if empty(l:rootdir)
         let l:rootdir = l:repopath
     endif
