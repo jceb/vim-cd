@@ -59,11 +59,11 @@ command! -complete=dir -nargs=1 Wlcd :let s:winnr = winnr()<bar>exec "silent lcd
 command! -complete=dir -nargs=1 Wtcd :let s:winnr = winnr()<bar>exec "silent tcd ".fnameescape(<f-args>)<Bar>exec "windo silent tcd ".fnameescape(getcwd())<bar>pwd<Bar>exec s:winnr."wincmd w"
 
 " change to directory of the current buffer
-command! WindoCD :WindowCd
+command! WindoCD :WindoCd
 command! WindoCd :let s:winnr = winnr()<Bar>exec "windo silent cd ".fnameescape(expand("%:p:h"))<bar>pwd<Bar>exec s:winnr."wincmd w"
-command! WindoLCD :WindowLcd
+command! WindoLCD :WindoLcd
 command! WindoLcd :let s:winnr = winnr()<Bar>exec "windo silent lcd ".fnameescape(expand("%:p:h"))<bar>pwd<Bar>exec s:winnr."wincmd w"
-command! WindoTCD :WindowTCD
+command! WindoTCD :WindoTCD
 command! WindoTcd :let s:winnr = winnr()<Bar>exec "windo silent tcd ".fnameescape(expand("%:p:h"))<bar>pwd<Bar>exec s:winnr."wincmd w"
 
 " chdir to directory with subdirector ./debian (very useful if you do
